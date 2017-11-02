@@ -1,6 +1,24 @@
 <resources>
-    <string name="app_name">Service</string>
+    <string name="app_name">Voice AI</string>
     <string name="download_data">Requires Language data to proceed, would you like to install</string>
     <string name="Info">Please wait for the language data to finish installing and try again</string>
     <string name="Open_Network">Please open network to allow voice recognition</string>
+    <string name="Setting">Setting</string>
+    <string name="Activation">Activation Methods</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="apiKey">fd9188ab4d354e54bff544d00fad70b0</string>
+    <string-array name="setting_items">
+        <item>Language</item>
+        <item>Activation</item>
+        <item>Voice type</item>
+    </string-array>
+    <string-array name="activation_items">
+        <item>Shaking device</item>
+        <item>Press button</item>
+    </string-array>
+    <string-array name="Voice_type">
+        <item>Mike [en-us]</item>
+        <item>Lyra  [en-us] free</item>
+    </string-array>
 </resources>

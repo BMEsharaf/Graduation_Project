@@ -1,6 +1,8 @@
-package first.assist.merda.project;
+package manager.texttospeech.tts.google;
 
 import android.speech.tts.TextToSpeech;
+
+import manager.texttospeech.tts.VoiceType;
 
 public interface TextToSpeechStartupListener
 {
@@ -11,10 +13,8 @@ public interface TextToSpeechStartupListener
      * the fully initialized object
      */
     public void onSuccessfulInit(TextToSpeech tts);
-    /**
-     * language data is required, to install call
-     * {@link TextToSpeechInitializer#installLanguageData()}
-     */
+
+
     public void onRequireLanguageData();
     /**
      * The app has already requested language data, and is waiting for it.
@@ -24,4 +24,7 @@ public interface TextToSpeechStartupListener
      * initialization failed and can never complete.
      */
     public void onFailedToInit();
+
+    public void onSpeakDone(String utteranceId);
+
 }

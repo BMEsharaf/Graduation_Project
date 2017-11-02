@@ -1,4 +1,4 @@
-package first.assist.merda.project;
+package manager.texttospeech.tts.google;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -14,13 +14,9 @@ import android.support.v4.app.DialogFragment;
 
 public class TextToSpeechDialog extends DialogFragment {
 
+    onDialogButtonListener listener;
     private int id ;
     private String title ;
-    public interface onDialogButtonListener{
-        public void onAccept(String title);
-        public void onCancel(String title);
-    }
-    onDialogButtonListener listener ;
 
     @Override
     public void onAttach(Context context) {
@@ -34,7 +30,7 @@ public class TextToSpeechDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        final String title = getArguments().getString("title");
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(id)
                 .setTitle(title)
@@ -44,7 +40,7 @@ public class TextToSpeechDialog extends DialogFragment {
                         listener.onAccept(title);
                     }
                 })
-                .setNegativeButton(getArguments().getString("Negative"), new DialogInterface.OnClickListener() {
+                .setNegativeButton("test", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         listener.onCancel(title);
@@ -53,10 +49,18 @@ public class TextToSpeechDialog extends DialogFragment {
                 });
         return builder.create();
     }
+
     public void setMessage(int id){
        this.id = id ;
     }
+
     public void setTitle(String title){
         this.title = title ;
+    }
+
+    public interface onDialogButtonListener {
+        public void onAccept(String title);
+
+        public void onCancel(String title);
     }
 }
