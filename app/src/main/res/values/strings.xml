@@ -7,11 +7,13 @@
     <string name="Activation">Activation Methods</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
-    <string name="apiKey">fd9188ab4d354e54bff544d00fad70b0</string>
+    <string name="apiKey">27e5921c00e94d6687c8721c93167a9a</string>
+    <string name="Settings">Settings</string>
     <string-array name="setting_items">
         <item>Language</item>
         <item>Activation</item>
         <item>Voice type</item>
+        <item>Email setting</item>
     </string-array>
     <string-array name="activation_items">
         <item>Shaking device</item>
@@ -20,5 +22,32 @@
     <string-array name="Voice_type">
         <item>Mike [en-us]</item>
         <item>Lyra  [en-us] free</item>
+    </string-array>
+    <string name="shacking_activation">Shacking</string>
+    <string name="shacking_activation_off">Shaking off</string>
+    <string name="shacking_activation_on">Shaking on</string>
+    <string name="headset_button_activation">Headset Button</string>
+    <string name="headset_button_activation_on">Headset on</string>
+    <string name="headset_button_activation_off">Headset off</string>
+    <string name="voice_type">Voice Type</string>
+    <string name="user_info">User Information</string>
+    <string name="user_name">Name</string>
+    <string name="user_email">Email</string>
+    <string name="user_password">Password</string>
+    <string name="pref_user_name_key" translatable="false">User name key</string>
+    <string name="pref_user_email_key" translatable="false">email key</string>
+    <string name="pref_user_password_key" translatable="false">password key</string>
+    <string name="pref_user_password_summary">Provide password of your email</string>
+    <string-array name="voices">
+        <item>Lyra [en-us] free</item>
+        <item>Mike [en-us]</item>
+        <item>Hend [ar-eg]</item>
+        <item>هيثم</item>
+    </string-array>
+    <string-array name="voices_values">
+        <item>Lyra</item>
+        <item>Mike</item>
+        <item>Hend</item>
+        <item>Hitham</item>
     </string-array>
 </resources>

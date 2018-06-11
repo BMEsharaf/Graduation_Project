@@ -11,7 +11,7 @@ import android.util.Log;
 import static android.content.Context.SENSOR_SERVICE;
 
 class SensorActivator implements SensorEventListener {
-    private static final int THRESHOLD = 12;
+    private static final int THRESHOLD = 10;
     private static final float ALPHA = 0.8f;
     private SensorManager sensorManager;
     private float gravity[] = new float[3];
@@ -23,17 +23,17 @@ class SensorActivator implements SensorEventListener {
         sensorManager = (SensorManager) context.getSystemService(SENSOR_SERVICE);
     }
 
-    public void activate() {
-        activated = true;
-        registerAccelerometer();
+    public void unregisterAccelerometer() {
+        activated = false;
+        sensorManager.unregisterListener(this);
     }
 
-    private void registerAccelerometer() {
+    public void registerAccelerometer() {
         sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_NORMAL);
     }
 
-    void deActivate() {
+    public void deActivate() {
         activated = false;
         Log.i("TAG", "Sensor is deactivated");
         sensorManager.unregisterListener(this);

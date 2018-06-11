@@ -19,14 +19,16 @@ import static android.speech.tts.TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID;
  * Created by User on 9/13/2017.
  */
 
-public class TextToSpeechInitializer {
+public class TextToSpeechInitializer implements TextToSpeech.OnInitListener {
 
     private final static String TAG = "TEXT_TO_SPEECH_TAG";
     private Context context;
     private TextToSpeechStartupListener callback;
     private TextToSpeech tts;
     private boolean isSpeaking = false, CanSpeak = false;
-
+    private Locale locale;
+    private String text, utterance;
+    private boolean dataFlag = false;
     public TextToSpeechInitializer(Context context, TextToSpeechStartupListener callback) {
         this.context = context;
         this.callback = callback;
@@ -67,36 +69,8 @@ public class TextToSpeechInitializer {
     }
 
     public void createTextToSpeech(final Locale locale) {
-        tts = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if (status == TextToSpeech.SUCCESS) {
-                    setTextToSpeechSettings(locale);
-
-                    tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
-                        @Override
-                        public void onStart(String utteranceId) {
-                            isSpeaking = true;
-                        }
-
-                        @Override
-                        public void onDone(String utteranceId) {
-                            callback.onSpeakDone(utteranceId);
-                            isSpeaking = false;
-                        }
-
-                        @Override
-                        public void onError(String utteranceId) {
-                            isSpeaking = false;
-                        }
-                    });
-                } else {
-                    Log.e("TAG", "error creating text to speech");
-                    tts.shutdown();
-                    callback.onFailedToInit();
-                }
-            }
-        });
+        this.locale = locale;
+        tts = new TextToSpeech(context, this);
     }
 
     private void setTextToSpeechSettings(final Locale locale) {
@@ -111,7 +85,6 @@ public class TextToSpeechInitializer {
             case TextToSpeech.LANG_COUNTRY_VAR_AVAILABLE:
                 Log.d(TAG, "SUPPORTED");
                 tts.setLanguage(locale);
-                callback.onSuccessfulInit(tts);
                 break;
             case TextToSpeech.LANG_MISSING_DATA:
                 Log.d(TAG, "MISSING_DATA");
@@ -165,7 +138,14 @@ public class TextToSpeechInitializer {
     private void speakUnder20(String text, String utteranceId) {
         final HashMap<String, String> map = new HashMap<>();
         map.put(KEY_PARAM_UTTERANCE_ID, utteranceId);
-        tts.speak(text, TextToSpeech.QUEUE_FLUSH, map);
+
+        int status = tts.speak(text, TextToSpeech.QUEUE_FLUSH, map);
+        if (status != TextToSpeech.SUCCESS) {
+            dataFlag = true;
+            this.text = text;
+            this.utterance = utteranceId;
+            tts = new TextToSpeech(context, this);
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -177,7 +157,13 @@ public class TextToSpeechInitializer {
     private void speakUnder20(String text, String utteranceId, int queue) {
         final HashMap<String, String> map = new HashMap<>();
         map.put(KEY_PARAM_UTTERANCE_ID, utteranceId);
-        tts.speak(text, queue, map);
+        int status = tts.speak(text, queue, map);
+        if (status != TextToSpeech.SUCCESS) {
+            dataFlag = true;
+            this.text = text;
+            this.utterance = utteranceId;
+            tts = new TextToSpeech(context, this);
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -187,6 +173,42 @@ public class TextToSpeechInitializer {
 
     public boolean isSpeaking() {
         return isSpeaking;
+    }
+
+
+    @Override
+    public void onInit(int status) {
+
+        if (status == TextToSpeech.SUCCESS) {
+            setTextToSpeechSettings(locale);
+            if (dataFlag == true) {
+                dataFlag = false;
+                speak(text, utterance);
+            }
+            tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+                @Override
+                public void onStart(String utteranceId) {
+                    isSpeaking = true;
+                }
+
+                @Override
+                public void onDone(String utteranceId) {
+                    callback.onSpeakDone(utteranceId);
+                    isSpeaking = false;
+                }
+
+                @Override
+                public void onError(String utteranceId) {
+                    isSpeaking = false;
+                }
+            });
+            callback.onSuccessfulInit(tts);
+        } else {
+            Log.e("TAG", "error creating text to speech");
+            tts.shutdown();
+            callback.onFailedToInit();
+        }
+
     }
 }
 
